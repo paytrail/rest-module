@@ -1,0 +1,14 @@
+{
+    "name": "paytrail/rest-module",
+    "description": "A PHP package for integrating with Paytrail's REST interface.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Paytrail",
+            "email": "tech@paytrail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
