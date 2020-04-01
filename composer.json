@@ -1,6 +1,6 @@
 {
     "name": "paytrail/rest-module",
-    "description": "A PHP package for integrating with Paytrail's REST interface.",
+    "description": "A legacy PHP package for integrating with Paytrail's deprecated E1 and S1 REST interface.",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -10,5 +10,10 @@
         }
     ],
     "minimum-stability": "stable",
-    "require": {}
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Paytrail\\": "src/"
+        }
+    }
 }
