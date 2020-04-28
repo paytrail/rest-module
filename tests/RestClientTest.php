@@ -35,6 +35,7 @@ class RestClientTest extends TestCase
         $handlerStack = HandlerStack::create($mock);
         $client = new Client(['handler' => $handlerStack]);
         $restClient = new RestClient($this->merchant, $type, $client);
+
         return $restClient->getResponse($this->payment);
     }
 

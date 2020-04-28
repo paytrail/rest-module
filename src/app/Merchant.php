@@ -17,6 +17,7 @@ class Merchant
      *
      * @param string $merchantId
      * @param string $merchantSecret
+     *
      * @return self
      */
     public static function create(string $merchantId, string $merchantSecret): self
