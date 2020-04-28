@@ -7,7 +7,6 @@ namespace Paytrail\Rest;
 use Paytrail\Exceptions\ProductException;
 
 /**
- * @package rest-module
  * @author Paytrail <tech@paytrail.com>
  */
 class Product
@@ -28,8 +27,10 @@ class Product
      * Create new product.
      *
      * @param array $productData
+     *
+     * @throws ProductException
+     *
      * @return self
-     * @throws  ProductException
      */
     public static function create(array $productData): self
     {
@@ -45,7 +46,6 @@ class Product
         $product->vat = $productData['vat'] ?? 24;
         $product->discount = $productData['discount'] ?? 0;
         $product->code = $productData['code'] ?? '';
-
 
         return $product;
     }

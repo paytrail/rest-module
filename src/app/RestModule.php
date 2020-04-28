@@ -8,7 +8,6 @@ use Paytrail\Exceptions\ProductException;
 use Paytrail\Exceptions\ValidationException;
 
 /**
- * @package rest-module
  * @author Paytrail <tech@paytrail.com>
  */
 class RestModule
@@ -35,6 +34,7 @@ class RestModule
      * Add customer information to order.
      *
      * @param Customer $customer
+     *
      * @return void
      */
     public function addCustomer(Customer $customer): void
@@ -46,6 +46,7 @@ class RestModule
      * Add products to order.
      *
      * @param array $products
+     *
      * @return void
      */
     public function addProducts(array $products): void
@@ -65,6 +66,7 @@ class RestModule
      * Add order price.
      *
      * @param float $price
+     *
      * @return void
      */
     public function addPrice(float $price): void
@@ -84,14 +86,16 @@ class RestModule
      * Create payment.
      *
      * @param string $orderNumber
-     * @param array $paymentData
+     * @param array  $paymentData
      * @param string $type
+     *
      * @return void
      */
     public function createPayment(string $orderNumber, array $paymentData = [], string $type = self::TYPE_JSON): void
     {
         if (!$this->price && empty($this->products)) {
             throw new ProductException('Payment must have price or at least one product');
+
             return;
         }
 
@@ -103,6 +107,7 @@ class RestModule
      * Get link to Paytrail payment page.
      *
      * @param RestClient $restClient
+     *
      * @return string
      */
     public function getPaymentLink(RestClient $restClient = null): string
@@ -113,6 +118,7 @@ class RestModule
 
         $restClient = $restClient ?? new RestClient($this->merchant, $this->type);
         $response = $restClient->getResponse($this->payment);
+
         return (string) $response->url;
     }
 
@@ -120,6 +126,7 @@ class RestModule
      * Get embed payment widget.
      *
      * @param RestClient $restClient
+     *
      * @return string
      */
     public function getPaymentWidget(RestClient $restClient = null): string
@@ -144,6 +151,7 @@ class RestModule
      * Validate return authcode.
      *
      * @param array $returnParameters
+     *
      * @return boolean
      */
     public function returnAuthcodeIsValid(array $returnParameters): bool
@@ -155,6 +163,7 @@ class RestModule
      * Check if order is paid.
      *
      * @param array $returnParameters
+     *
      * @return boolean
      */
     public function isPaid(array $returnParameters): bool

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Paytrail\Rest;
 
 /**
- * @package rest-module
  * @author Paytrail <tech@paytrail.com>
  */
 class Customer
@@ -25,6 +24,7 @@ class Customer
      * Create customer for payment.
      *
      * @param array $customerData
+     *
      * @return self
      */
     public static function create(array $customerData): self

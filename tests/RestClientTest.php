@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
@@ -20,7 +19,6 @@ use PHPUnit\Framework\TestCase;
 
 class RestClientTest extends TestCase
 {
-
     private $merchant;
     private $payment;
 
@@ -37,6 +35,7 @@ class RestClientTest extends TestCase
         $handlerStack = HandlerStack::create($mock);
         $client = new Client(['handler' => $handlerStack]);
         $restClient = new RestClient($this->merchant, $type, $client);
+
         return $restClient->getResponse($this->payment);
     }
 
@@ -66,7 +65,7 @@ class RestClientTest extends TestCase
     {
         $responseBody = '{"errorMessage":"Error"}';
         $mock = new MockHandler([
-            new Response(404, ['Content-Type' => RestModule::TYPE_JSON,], $responseBody),
+            new Response(404, ['Content-Type' => RestModule::TYPE_JSON], $responseBody),
         ]);
 
         $this->expectException(ConnectionException::class);
@@ -77,7 +76,7 @@ class RestClientTest extends TestCase
     {
         $responseBody = '<?xml version="1.0" encoding="UTF-8"?><payment><errorMessage>Error</errorMessage></payment>';
         $mock = new MockHandler([
-            new Response(404, ['Content-Type' => RestModule::TYPE_XML,], $responseBody),
+            new Response(404, ['Content-Type' => RestModule::TYPE_XML], $responseBody),
         ]);
 
         $this->expectException(ConnectionException::class);

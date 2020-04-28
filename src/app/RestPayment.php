@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace Paytrail\Rest;
 
-use Paytrail\Exceptions\TemplateException;
-
 /**
- * @package rest-module
  * @author Paytrail <tech@paytrail.com>
  */
 class RestPayment
@@ -74,7 +71,7 @@ class RestPayment
                     'postalCode' => $this->customer->postalCode,
                     'postalOffice' => $this->customer->postalOffice,
                     'country' => $this->customer->country,
-                ]
+                ],
             ];
         }
 
@@ -86,7 +83,7 @@ class RestPayment
                 'price' => $product->price,
                 'vat' => $product->vat,
                 'discount' => $product->discount,
-                'type' => $product->type
+                'type' => $product->type,
             ];
         }
 
@@ -120,7 +117,7 @@ class RestPayment
             $data['products'] = $this->products;
         }
 
-        return $this->getXmlTemplate('xml', $data);
+        return $this->getXmlTemplate($data);
     }
 
     /**
@@ -133,23 +130,20 @@ class RestPayment
         $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
         $host = $_SERVER['HTTP_HOST'] ?? '';
         $requestUri = $_SERVER['REQUEST_URI'] ?? '';
+
         return "{$protocol}://{$host}{$requestUri}";
     }
 
     /**
      * Get XML content from template.
      *
-     * @param string $templateName
      * @param array $data
+     *
      * @return string
      */
-    private function getXmlTemplate(string $templateName, array $data = []): string
+    private function getXmlTemplate(array $data = []): string
     {
-        $templateFile = __DIR__ . self::TEMPLATE_PATH . basename($templateName) . '.phtml';
-
-        if (!file_exists($templateFile)) {
-            throw new TemplateException("Template for {$templateName} not found");
-        }
+        $templateFile = __DIR__ . self::TEMPLATE_PATH . 'xml.phtml';
 
         foreach ($data as $key => $value) {
             $$key = $value;

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Paytrail\Rest;
 
 /**
- * @package rest-module
  * @author Paytrail <tech@paytrail.com>
  */
 class Merchant
@@ -18,6 +17,7 @@ class Merchant
      *
      * @param string $merchantId
      * @param string $merchantSecret
+     *
      * @return self
      */
     public static function create(string $merchantId, string $merchantSecret): self

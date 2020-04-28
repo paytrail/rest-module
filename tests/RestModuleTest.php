@@ -59,6 +59,7 @@ class RestModuleTest extends TestCase
         $response = new \stdClass();
         $response->url = self::PAYMENT_LINK;
         $response->token = self::TOKEN;
+
         return $response;
     }
 
@@ -151,7 +152,7 @@ class RestModuleTest extends TestCase
         $notPaidReturnParameters = [
             'ORDER_NUMBER' => self::ORDER_NUMBER,
             'TIMESTAMP' => '1588058158',
-            'RETURN_AUTHCODE ' => 'B1370EB96F52DD1EDB2B3400807A6597'
+            'RETURN_AUTHCODE' => 'B1370EB96F52DD1EDB2B3400807A6597',
         ];
 
         $paidReturnParameters = [
@@ -171,7 +172,7 @@ class RestModuleTest extends TestCase
         $notPaidReturnParameters = [
             'ORDER_NUMBER' => self::ORDER_NUMBER,
             'TIMESTAMP' => '1588058158',
-            'RETURN_AUTHCODE' => 'B1370EB96F52DD1EDB2B3400807A6597'
+            'RETURN_AUTHCODE' => 'B1370EB96F52DD1EDB2B3400807A6597',
         ];
 
         $paidReturnParameters = [
