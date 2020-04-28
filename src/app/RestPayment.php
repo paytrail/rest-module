@@ -29,6 +29,11 @@ class RestPayment
         $this->price = $price;
     }
 
+    /**
+     * Get rest request content as JSON.
+     *
+     * @return string
+     */
     public function getJsonData(): string
     {
         $data = [
@@ -88,6 +93,11 @@ class RestPayment
         return json_encode($data);
     }
 
+    /**
+     * Get rest request content as XML.
+     *
+     * @return string
+     */
     public function getXmlData(): string
     {
         $data = [
@@ -113,6 +123,11 @@ class RestPayment
         return $this->getXmlTemplate('xml', $data);
     }
 
+    /**
+     * Get server ulr for default return urls.
+     *
+     * @return string
+     */
     private function getServerUrl(): string
     {
         $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
@@ -121,6 +136,13 @@ class RestPayment
         return "{$protocol}://{$host}{$requestUri}";
     }
 
+    /**
+     * Get XML content from template.
+     *
+     * @param string $templateName
+     * @param array $data
+     * @return string
+     */
     private function getXmlTemplate(string $templateName, array $data = []): string
     {
         $templateFile = __DIR__ . self::TEMPLATE_PATH . basename($templateName) . '.phtml';

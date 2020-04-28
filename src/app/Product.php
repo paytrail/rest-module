@@ -25,13 +25,13 @@ class Product
     public $code;
 
     /**
-     * Create new product
+     * Create new product.
      *
      * @param array $productData
-     * @return void
+     * @return self
      * @throws  ProductException
      */
-    public static function create(array $productData)
+    public static function create(array $productData): self
     {
         if (!isset($productData['title']) || !isset($productData['price'])) {
             throw new ProductException('title and price are mandatory');

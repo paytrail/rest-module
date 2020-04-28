@@ -31,11 +31,23 @@ class RestModule
         $this->merchant = $merchant;
     }
 
+    /**
+     * Add customer information to order.
+     *
+     * @param Customer $customer
+     * @return void
+     */
     public function addCustomer(Customer $customer): void
     {
         $this->customer = $customer;
     }
 
+    /**
+     * Add products to order.
+     *
+     * @param array $products
+     * @return void
+     */
     public function addProducts(array $products): void
     {
         if ($this->price) {
@@ -49,6 +61,12 @@ class RestModule
         $this->products = $products;
     }
 
+    /**
+     * Add order price.
+     *
+     * @param float $price
+     * @return void
+     */
     public function addPrice(float $price): void
     {
         if (!empty($this->products)) {
@@ -62,7 +80,15 @@ class RestModule
         $this->price = $price;
     }
 
-    public function createPayment(string $orderNumber, array $paymentData = [], $type = self::TYPE_JSON): void
+    /**
+     * Create payment.
+     *
+     * @param string $orderNumber
+     * @param array $paymentData
+     * @param string $type
+     * @return void
+     */
+    public function createPayment(string $orderNumber, array $paymentData = [], string $type = self::TYPE_JSON): void
     {
         if (!$this->price && empty($this->products)) {
             throw new ProductException('Payment must have price or at least one product');
@@ -73,6 +99,12 @@ class RestModule
         $this->payment = new RestPayment($orderNumber, $paymentData, $this->customer, $this->products, $this->price);
     }
 
+    /**
+     * Get link to Paytrail payment page.
+     *
+     * @param RestClient $restClient
+     * @return string
+     */
     public function getPaymentLink(RestClient $restClient = null): string
     {
         if (!$this->payment) {
@@ -80,12 +112,16 @@ class RestModule
         }
 
         $restClient = $restClient ?? new RestClient($this->merchant, $this->type);
-
         $response = $restClient->getResponse($this->payment);
-
         return (string) $response->url;
     }
 
+    /**
+     * Get embed payment widget.
+     *
+     * @param RestClient $restClient
+     * @return string
+     */
     public function getPaymentWidget(RestClient $restClient = null): string
     {
         if (!$this->payment) {
@@ -93,7 +129,6 @@ class RestModule
         }
 
         $restClient = $restClient ?? new RestClient($this->merchant, $this->type);
-
         $response = $restClient->getResponse($this->payment);
 
         $html = '<p id="paytrailPayment"></p>
@@ -105,11 +140,23 @@ class RestModule
         return $html;
     }
 
+    /**
+     * Validate return authcode.
+     *
+     * @param array $returnParameters
+     * @return boolean
+     */
     public function returnAuthcodeIsValid(array $returnParameters): bool
     {
         return $returnParameters['RETURN_AUTHCODE'] == Authcode::calculateReturnAuthCode($returnParameters, $this->merchant);
     }
 
+    /**
+     * Check if order is paid.
+     *
+     * @param array $returnParameters
+     * @return boolean
+     */
     public function isPaid(array $returnParameters): bool
     {
         return isset($returnParameters['PAID']);
