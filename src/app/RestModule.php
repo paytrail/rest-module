@@ -84,7 +84,8 @@ class RestModule
         $restClient = $restClient ?? new RestClient($this->merchant, $this->type);
 
         $response = $restClient->getResponse($this->payment);
-        return $response->url;
+
+        return (string) $response->url;
     }
 
     public function getPaymentWidget(RestClient $restClient = null): string
@@ -108,17 +109,11 @@ class RestModule
 
     public function returnAuthcodeIsValid(array $returnParameters): bool
     {
-        $authCode = $returnParameters['RETURN_AUTHCODE'];
-        unset($returnParameters['RETURN_AUTHCODE']);
-
-        $returnParameters[] = $this->merchant->secret;
-        $calculatedAuthcode = strtoupper(md5(implode('|', $returnParameters)));
-
-        return $authCode == $calculatedAuthcode;
+        return $returnParameters['RETURN_AUTHCODE'] == Authcode::calculateReturnAuthCode($returnParameters, $this->merchant);
     }
 
     public function isPaid(array $returnParameters): bool
     {
-        return (isset($returnParameters['METHOD']) && isset($returnParameters['TIMESTAMP']));
+        return isset($returnParameters['PAID']);
     }
 }

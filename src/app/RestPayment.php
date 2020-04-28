@@ -16,7 +16,7 @@ class RestPayment
     private $products;
     private $price;
 
-    public function __construct(string $orderNumber, array $paymentData, ?Customer $customer = null, ?array $products = null, ?float $price = null)
+    public function __construct(string $orderNumber, array $paymentData, ?Customer $customer = null, array $products = [], ?float $price = null)
     {
         $this->orderNumber = $orderNumber;
         $this->customer = $customer;

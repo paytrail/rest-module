@@ -4,20 +4,13 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use Paytrail\Exceptions\ProductException;
-use Paytrail\Exceptions\ValidationException;
 use Paytrail\Rest\Customer;
-use Paytrail\Rest\Merchant;
 use Paytrail\Rest\Product;
-use Paytrail\Rest\RestModule;
+use Paytrail\Rest\RestPayment;
 use PHPUnit\Framework\TestCase;
 
 class RestPaymentTest extends TestCase
 {
-    const TOKEN = 'secretToken';
-    const PAYMENT_LINK = 'linkToPayment';
-
-    private $restModule;
     private $product;
     private $customer;
 
@@ -25,15 +18,12 @@ class RestPaymentTest extends TestCase
     {
         parent::setUp();
 
-        $merchant = Merchant::create('13466', '6pKF4jkv97zmqBJ3ZL8gUw5DfT2NMQ');
-
-        $this->restModule = new RestModule($merchant);
-
         $this->product = Product::create([
             'title' => 'Foo',
             'code' => '001',
             'price' => 2,
         ]);
+
         $this->customer = Customer::create([
             'firstName' => 'Foo',
             'lastName' => 'Bar',
@@ -45,30 +35,63 @@ class RestPaymentTest extends TestCase
         ]);
     }
 
-    public function testExceptionIsThrownWithoutOrderNumber()
+    public function testGetJsonDataContainsCorrectValuesWithPrice()
     {
-        $this->expectException(ValidationException::class);
-        $this->restModule->getPaymentLink();
+        $restPayment = new RestPayment('1234', [], null, [], 10);
+        $json = $restPayment->getJsonData();
+
+        $this->assertStringContainsString('"orderNumber":"1234"', $json);
+        $this->assertStringContainsString('"currency":"EUR"', $json);
+        $this->assertStringContainsString('"locale":"fi_FI"', $json);
+        $this->assertStringContainsString('"urlSet":', $json);
+        $this->assertStringContainsString('"price":10', $json);
     }
 
-    public function testExceptionIsThrownWithoutProductsOrPrice()
+    public function testGetJsonDataContainsCorrectValuesWithCustomerAndProduct()
     {
-        $this->expectException(ProductException::class);
-        $this->restModule->createPayment('1234');
-        $this->restModule->getPaymentLink();
+        $restPayment = new RestPayment('1234', [], $this->customer, [$this->product]);
+        $json = $restPayment->getJsonData();
+
+        $this->assertStringContainsString('"orderNumber":"1234"', $json);
+        $this->assertStringContainsString('"currency":"EUR"', $json);
+        $this->assertStringContainsString('"locale":"fi_FI"', $json);
+        $this->assertStringContainsString('"urlSet":', $json);
+
+        $this->assertStringContainsString('"contact":', $json);
+        $this->assertStringContainsString('"firstName":"Foo"', $json);
+        $this->assertStringContainsString('"lastName":"Bar"', $json);
+
+        $this->assertStringContainsString('"products":', $json);
+        $this->assertStringContainsString('"title":"Foo"', $json);
     }
 
-    public function testExceptionIsThrownWhenAddingProductWhenAmountIsSet()
+    public function testGetXmlDataContainsCorrectValuesWithPrice()
     {
-        $this->expectException(ProductException::class);
-        $this->restModule->addPrice(10);
-        $this->restModule->addProducts([$this->product]);
+        $restPayment = new RestPayment('1234', [], null, [], 10);
+        $xml = $restPayment->getXmlData();
+
+        $this->assertStringContainsString('<orderNumber>1234', $xml);
+        $this->assertStringContainsString('<currency>EUR', $xml);
+        $this->assertStringContainsString('<locale>fi_FI', $xml);
+        $this->assertStringContainsString('<urlSet>', $xml);
+        $this->assertStringContainsString('<price>10', $xml);
     }
 
-    public function testExceptionIsThrownWhenAddingAmountAndHasProducts()
+    public function testGetXmlDataContainsCorrectValuesWithCustomerAndProduct()
     {
-        $this->expectException(ProductException::class);
-        $this->restModule->addProducts([$this->product]);
-        $this->restModule->addPrice(10);
+        $restPayment = new RestPayment('1234', [], $this->customer, [$this->product]);
+        $xml = $restPayment->getXmlData();
+
+        $this->assertStringContainsString('<orderNumber>1234', $xml);
+        $this->assertStringContainsString('<currency>EUR', $xml);
+        $this->assertStringContainsString('<locale>fi_FI', $xml);
+        $this->assertStringContainsString('<urlSet>', $xml);
+
+        $this->assertStringContainsString('<contact>', $xml);
+        $this->assertStringContainsString('<firstName>Foo', $xml);
+        $this->assertStringContainsString('<lastName>Bar', $xml);
+
+        $this->assertStringContainsString('<products>', $xml);
+        $this->assertStringContainsString('<title>Foo', $xml);
     }
 }
