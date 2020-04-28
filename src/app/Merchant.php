@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace Paytrail\Rest;
 
 /**
- * Class for Merchant data
- *
- * @package e2-module
+ * @package rest-module
  * @author Paytrail <tech@paytrail.com>
  */
 class Merchant

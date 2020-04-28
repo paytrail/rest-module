@@ -10,10 +10,8 @@ use GuzzleHttp\Psr7\Response;
 use Paytrail\Exception\ConnectionException;
 
 /**
- * Rest Client
- * 
+ * @package rest-module
  * @author Paytrail <tech@paytrail.com>
- * @version 1.0
  */
 class RestClient
 {

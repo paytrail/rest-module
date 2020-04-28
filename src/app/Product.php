@@ -6,6 +6,10 @@ namespace Paytrail\Rest;
 
 use Paytrail\Exceptions\ProductException;
 
+/**
+ * @package rest-module
+ * @author Paytrail <tech@paytrail.com>
+ */
 class Product
 {
     const TYPE_NORMAL = 1;

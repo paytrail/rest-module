@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Paytrail\Exceptions;
 
 /**
- * @package e2-module
+ * @package rest-module
  * @author Paytrail <tech@paytrail.com>
  */
 class ValidationException extends \Exception

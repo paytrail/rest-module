@@ -8,10 +8,8 @@ use Paytrail\Exceptions\ProductException;
 use Paytrail\Exceptions\ValidationException;
 
 /**
- * Rest module
- * 
+ * @package rest-module
  * @author Paytrail <tech@paytrail.com>
- * @version 1.0
  */
 class RestModule
 {

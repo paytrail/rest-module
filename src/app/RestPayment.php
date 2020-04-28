@@ -6,6 +6,10 @@ namespace Paytrail\Rest;
 
 use Paytrail\Exceptions\TemplateException;
 
+/**
+ * @package rest-module
+ * @author Paytrail <tech@paytrail.com>
+ */
 class RestPayment
 {
     const TEMPLATE_PATH = '/../templates/';
