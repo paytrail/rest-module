@@ -1,5 +1,6 @@
 # rest-module
 A PHP package for integrating with Paytrail's REST interface.
+Using [e2-module][e2-module] instead of REST is recommended.
 
 ## Installation
 Install via composer
@@ -10,7 +11,7 @@ composer require paytrail/rest-module
 
 ## Documentation
 
-Paytrail official documentation can be found in [https://docs.paytrail.com](https://docs.paytrail.com)
+Paytrail official documentation can be found in [here][docs].
 
 ## Examples
 
@@ -32,7 +33,7 @@ $linkToPayment = $restModule->getPaymentLink();
 ### Payment widget with customer, product information and custom return urls
 
 Include customer information, discounted product and custom return urls.
-Payment, customer and product properties can be found from [documentation](https://docs.paytrail.com)
+Payment, customer and product properties can be found from [documentation][docs].
 
 ```php
 use Paytrail\Rest\Merchant;
@@ -117,3 +118,6 @@ if (!$isValidPayment) {
 $isPaid = $e2Payment->isPaid($_GET);
 // Code to handle paid/cancelled status for order.
 ```
+
+[docs]: https://docs.paytrail.com
+[e2-module]: https://github.com/paytrail/e2-module
