@@ -109,7 +109,7 @@ class RestPayment
             $data['price'] = $this->price;
         }
 
-        if ($this->customer) {
+        if ($this->customer !== null) {
             $data['customer'] = $this->customer;
         }
 
