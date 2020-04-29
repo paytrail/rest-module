@@ -5,7 +5,7 @@ A PHP package for integrating with Paytrail's REST interface.
 Install via composer
 
 ```bash
-composer require Paytrail/rest-module
+composer require paytrail/rest-module
 ```
 
 ## Documentation
