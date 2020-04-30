@@ -96,26 +96,26 @@ $restModule->createPayment($orderNumber, $paymentData, RestModule::TYPE_XML);
 After returning from payment, whether success or cancelled, validate return authcode. Same validation applies to notify url.
 
 ```php
-$isValidPayment = $e2Payment->returnAuthcodeIsValid($_GET);
+$isValidPayment = $restModule->returnAuthcodeIsValid($_GET);
 ```
 
 You can also send return parameters as array instead of using `$_GET` superglobal. If return code is not valid, you can get validation errors.
 
 To get status of payment, paid or not.
 ```php
-$isPaid = $e2Payment->isPaid($_GET);
+$isPaid = $restModule->isPaid($_GET);
 ```
 
 ### Validating payment from notification
 If customer doesn't return back after payment, status can be verified from capturing payment data from notify url. Return authcode validation is similar than success and cancelled payment, but you also need determine payment status.
 
 ```php
-$isValidPayment = $e2Payment->returnAuthcodeIsValid($_GET);
+$isValidPayment = $restModule->returnAuthcodeIsValid($_GET);
 if (!$isValidPayment) {
     // code to handle invalid validation.
 }
 
-$isPaid = $e2Payment->isPaid($_GET);
+$isPaid = $restModule->isPaid($_GET);
 // Code to handle paid/cancelled status for order.
 ```
 
