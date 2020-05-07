@@ -61,7 +61,7 @@ class RestClientTest extends TestCase
         $this->assertSame('bar', (string) $response->foo);
     }
 
-    public function testNonSuccessRequestThrowsExceptionAsJson()
+    public function testInvalidRequestWithoutResponseContentThrowsException()
     {
         $responseBody = '{"errorMessage":"Error"}';
         $mock = new MockHandler([
@@ -72,7 +72,7 @@ class RestClientTest extends TestCase
         $this->getResponse($mock);
     }
 
-    public function testNonSuccessRequestThrowsExceptionAsXml()
+    public function testInvalidRequestWithResponseContentThrowsException()
     {
         $responseBody = '<?xml version="1.0" encoding="UTF-8"?><payment><errorMessage>Error</errorMessage></payment>';
         $mock = new MockHandler([
