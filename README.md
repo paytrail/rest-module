@@ -24,10 +24,9 @@ use Paytrail\Rest\RestModule;
 $merchant = Merchant::create($merchantId, $merchantSecret);
 $restModule = new RestModule($merchant);
 
-$restModule->addPrice(10.50);
-$restModule->createPayment($orderNumber);
-
-$linkToPayment = $restModule->getPaymentLink();
+$paymentLink = $restModule->addPrice(10.50)
+    ->createPayment($orderNumber)
+    ->getPaymentLink();
 ```
 
 ### Payment widget with customer, product information and custom return urls
@@ -77,11 +76,9 @@ $shipping = Product::create([
     'price' => 5,
     'type' => Product::TYPE_POSTAL,
 ]);
-$restModule->addProducts([$product, $shipping]);
-
-$restModule->createPayment($orderNumber, $paymentData);
-
-echo $restModule->getPaymentWidget();
+echo $restModule->addProducts([$product, $shipping])
+    ->createPayment($orderNumber, $paymentData)
+    ->getPaymentWidget();
 ```
 
 ### XML mode

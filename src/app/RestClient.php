@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Paytrail\Rest;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Response;
 use Paytrail\Exception\ConnectionException;
 
@@ -82,9 +81,11 @@ class RestClient
                     'X-Verkkomaksut-Api-Version' => self::API_VERSION,
                 ],
             ]);
-        } catch (ClientException $e) {
-            return $e->getResponse();
-        } catch (ConnectException $e) {
+        } catch (RequestException $e) {
+            if ($e->hasResponse()) {
+                return $e->getResponse();
+            }
+
             throw new ConnectionException($e->getMessage());
         }
     }

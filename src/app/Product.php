@@ -15,6 +15,8 @@ class Product
     const TYPE_POSTAL = 2;
     const TYPE_HANDLING = 3;
 
+    const DEFAULT_VAT_PERCENT = 24;
+
     public $title;
     public $price;
     public $amount;
@@ -43,7 +45,7 @@ class Product
         $product->price = $productData['price'];
         $product->amount = $productData['amount'] ?? 1;
         $product->type = $productData['type'] ?? self::TYPE_NORMAL;
-        $product->vat = $productData['vat'] ?? 24;
+        $product->vat = $productData['vat'] ?? self::DEFAULT_VAT_PERCENT;
         $product->discount = $productData['discount'] ?? 0;
         $product->code = $productData['code'] ?? '';
 
