@@ -127,6 +127,7 @@ class RestModule
 
         $restClient = $this->restClient ?? new RestClient($this->merchant, $this->type);
         $response = $restClient->getResponse($this->payment);
+
         return (string) $response->url;
     }
 
