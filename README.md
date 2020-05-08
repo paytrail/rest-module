@@ -1,6 +1,6 @@
 # rest-module
 A PHP package for integrating with Paytrail's REST interface.
-Using [e2-module][e2-module] instead of REST is recommended.
+Using [Paytrail E2 library][e2-module] instead of REST is recommended.
 
 ## Installation
 Install via composer
