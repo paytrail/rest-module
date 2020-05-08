@@ -117,7 +117,7 @@ class RestPayment
             $data['products'] = $this->products;
         }
 
-        return $this->getXmlTemplate($data);
+        return Template::render('xml', $data);
     }
 
     /**
@@ -132,27 +132,5 @@ class RestPayment
         $requestUri = $_SERVER['REQUEST_URI'] ?? '';
 
         return "{$protocol}://{$host}{$requestUri}";
-    }
-
-    /**
-     * Get XML content from template.
-     *
-     * @param array $data
-     * @return string
-     */
-    private function getXmlTemplate(array $data = []): string
-    {
-        $templateFile = __DIR__ . self::TEMPLATE_PATH . 'xml.phtml';
-
-        foreach ($data as $key => $value) {
-            $$key = $value;
-        }
-
-        ob_start();
-        include $templateFile;
-        $xml = ob_get_contents();
-        ob_end_clean();
-
-        return $xml;
     }
 }

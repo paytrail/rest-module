@@ -22,7 +22,6 @@ class RestModuleTest extends TestCase
 
     const ORDER_NUMBER = 'Test-Payment-1234';
 
-    private $restModule;
     private $product;
     private $customer;
 
@@ -34,9 +33,7 @@ class RestModuleTest extends TestCase
 
         $this->prophet = new Prophet();
 
-        $merchant = Merchant::create('13466', '6pKF4jkv97zmqBJ3ZL8gUw5DfT2NMQ');
 
-        $this->restModule = new RestModule($merchant);
 
         $this->product = Product::create([
             'title' => 'Foo',
@@ -52,6 +49,17 @@ class RestModuleTest extends TestCase
             'postalOffice' => 'Bar',
             'country' => 'FI',
         ]);
+    }
+
+    private function getRestModule(RestPayment $payment = null)
+    {
+        $merchant = Merchant::create('13466', '6pKF4jkv97zmqBJ3ZL8gUw5DfT2NMQ');
+
+        $restClientMock = $this->prophet->prophesize();
+        $restClientMock->willExtend(RestClient::class);
+        $restClientMock->getResponse($payment)->willReturn($this->getRestResponse());
+
+        return new RestModule($merchant, $restClientMock->reveal());
     }
 
     private function getRestResponse()
@@ -71,58 +79,59 @@ class RestModuleTest extends TestCase
 
     public function testExceptionIsThrownWithoutOrderNumberOnPaymentLink()
     {
+        $restModule = $this->getRestModule();
         $this->expectException(ValidationException::class);
-        $this->restModule->getPaymentLink();
+        $restModule->getPaymentLink();
     }
 
     public function testExceptionIsThrownWithoutOrderNumberOnPaymentWidget()
     {
+        $restModule = $this->getRestModule();
         $this->expectException(ValidationException::class);
-        $this->restModule->getPaymentWidget();
+        $restModule->getPaymentWidget();
     }
 
     public function testExceptionIsThrownWithoutProductsOrPrice()
     {
+        $restModule = $this->getRestModule();
         $this->expectException(ProductException::class);
-        $this->restModule->createPayment(self::ORDER_NUMBER);
-        $this->restModule->getPaymentLink();
+        $restModule->createPayment(self::ORDER_NUMBER);
     }
 
     public function testExceptionIsThrownWhenAddingProductWhenAmountIsSet()
     {
+        $restModule = $this->getRestModule();
         $this->expectException(ProductException::class);
-        $this->restModule->addPrice(10);
-        $this->restModule->addProducts([$this->product]);
+        $restModule->addPrice(10);
+        $restModule->addProducts([$this->product]);
     }
 
     public function testExceptionIsThrownWhenAddingAmountAndHasProducts()
     {
+        $restModule = $this->getRestModule();
         $this->expectException(ProductException::class);
-        $this->restModule->addProducts([$this->product]);
-        $this->restModule->addPrice(10);
+        $restModule->addProducts([$this->product]);
+        $restModule->addPrice(10);
     }
 
     public function testCustomerInformationWithPriceThrowsException()
     {
+        $restModule = $this->getRestModule();
         $this->expectException(ValidationException::class);
-        $this->restModule->addCustomer($this->customer);
-        $this->restModule->addPrice(10);
+        $restModule->addCustomer($this->customer);
+        $restModule->addPrice(10);
     }
 
     public function testPaymentLinkIsCreated()
     {
         $payment = new RestPayment(self::ORDER_NUMBER, [], null, [], 10);
 
-        $restResponse = $this->getRestResponse();
+        $restModule = $this->getRestModule($payment);
 
-        $this->restModule->addPrice(10);
-        $this->restModule->createPayment(self::ORDER_NUMBER, [], RestModule::TYPE_XML);
+        $restModule->addPrice(10);
+        $restModule->createPayment(self::ORDER_NUMBER, [], RestModule::TYPE_XML);
 
-        $restClientMock = $this->prophet->prophesize();
-        $restClientMock->willExtend(RestClient::class);
-        $restClientMock->getResponse($payment)->willReturn($restResponse);
-
-        $paymentLink = $this->restModule->getPaymentLink($restClientMock->reveal());
+        $paymentLink = $restModule->getPaymentLink();
 
         $this->assertSame(self::PAYMENT_LINK, $paymentLink);
     }
@@ -131,17 +140,13 @@ class RestModuleTest extends TestCase
     {
         $payment = new RestPayment(self::ORDER_NUMBER, [], $this->customer, [$this->product]);
 
-        $restResponse = $this->getRestResponse();
+        $restModule = $this->getRestModule($payment);
 
-        $this->restModule->addCustomer($this->customer);
-        $this->restModule->addProducts([$this->product]);
-        $this->restModule->createPayment(self::ORDER_NUMBER);
+        $restModule->addCustomer($this->customer);
+        $restModule->addProducts([$this->product]);
+        $restModule->createPayment(self::ORDER_NUMBER);
 
-        $restClientMock = $this->prophet->prophesize();
-        $restClientMock->willExtend(RestClient::class);
-        $restClientMock->getResponse($payment)->willReturn($restResponse);
-
-        $paymentLink = $this->restModule->getPaymentWidget($restClientMock->reveal());
+        $paymentLink = $restModule->getPaymentWidget();
 
         $this->assertStringContainsString(self::TOKEN, $paymentLink);
         $this->assertStringContainsString(RestModule::WIDGET_URL, $paymentLink);
@@ -163,8 +168,10 @@ class RestModuleTest extends TestCase
             'RETURN_AUTHCODE' => '8D9F70E16ACC86876E0A2FF806B134C3',
         ];
 
-        $this->assertFalse($this->restModule->isPaid($notPaidReturnParameters));
-        $this->assertTrue($this->restModule->isPaid($paidReturnParameters));
+        $restModule = $this->getRestModule();
+
+        $this->assertFalse($restModule->isPaid($notPaidReturnParameters));
+        $this->assertTrue($restModule->isPaid($paidReturnParameters));
     }
 
     public function testReturnAuhtcodeIsCorrect()
@@ -183,8 +190,10 @@ class RestModuleTest extends TestCase
             'RETURN_AUTHCODE' => '8D9F70E16ACC86876E0A2FF806B134C3',
         ];
 
-        $this->assertTrue($this->restModule->returnAuthcodeIsValid($notPaidReturnParameters));
-        $this->assertTrue($this->restModule->returnAuthcodeIsValid($paidReturnParameters));
+        $restModule = $this->getRestModule();
+
+        $this->assertTrue($restModule->returnAuthcodeIsValid($notPaidReturnParameters));
+        $this->assertTrue($restModule->returnAuthcodeIsValid($paidReturnParameters));
     }
 
     public function testReturnAuhtcodeIsInvalidWhenParameterIsMissing()
@@ -196,7 +205,9 @@ class RestModuleTest extends TestCase
             'RETURN_AUTHCODE' => '8D9F70E16ACC86876E0A2FF806B134C3',
         ];
 
-        $this->assertFalse($this->restModule->returnAuthcodeIsValid($returnParameters));
+        $restModule = $this->getRestModule();
+
+        $this->assertFalse($restModule->returnAuthcodeIsValid($returnParameters));
     }
 
     public function testReturnAuhtcodeIsInvalidWhenCalculatedSumDoesNotMatch()
@@ -209,6 +220,8 @@ class RestModuleTest extends TestCase
             'RETURN_AUTHCODE' => '8D9F70E16ACC86876E0A2FF806B1AAAA',
         ];
 
-        $this->assertFalse($this->restModule->returnAuthcodeIsValid($returnParameters));
+        $restModule = $this->getRestModule();
+
+        $this->assertFalse($restModule->returnAuthcodeIsValid($returnParameters));
     }
 }

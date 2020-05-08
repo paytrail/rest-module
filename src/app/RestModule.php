@@ -25,9 +25,12 @@ class RestModule
     private $payment;
     private $type;
 
-    public function __construct(Merchant $merchant)
+    private $restClient;
+
+    public function __construct(Merchant $merchant, RestClient $restClient = null)
     {
         $this->merchant = $merchant;
+        $this->restClient = $restClient;
     }
 
     /**
@@ -108,13 +111,13 @@ class RestModule
      * @return string
      * @throws ValidationException
      */
-    public function getPaymentLink(RestClient $restClient = null): string
+    public function getPaymentLink(): string
     {
         if ($this->payment === null) {
             throw new ValidationException('No valid payment found');
         }
 
-        $restClient = $restClient ?? new RestClient($this->merchant, $this->type);
+        $restClient = $this->restClient ?? new RestClient($this->merchant, $this->type);
         $response = $restClient->getResponse($this->payment);
 
         return (string) $response->url;
@@ -127,22 +130,21 @@ class RestModule
      * @return string
      * @throws ValidationException
      */
-    public function getPaymentWidget(RestClient $restClient = null): string
+    public function getPaymentWidget(): string
     {
         if (!$this->payment) {
             throw new ValidationException('No valid payment found');
         }
 
-        $restClient = $restClient ?? new RestClient($this->merchant, $this->type);
+        $restClient = $this->restClient ?? new RestClient($this->merchant, $this->type);
         $response = $restClient->getResponse($this->payment);
 
-        $html = '<p id="paytrailPayment"></p>
-            <script type="text/javascript" src="' . self::WIDGET_URL . '"></script>
-                <script type="text/javascript">
-                    SV.widget.initWithToken(\'paytrailPayment\',\'' . $response->token . '\', {charset: \'UTF-8\'});
-                </script>';
+        $templateData = [
+            'widgetUrl' => self::WIDGET_URL,
+            'token' => $response->token,
+        ];
 
-        return $html;
+        return Template::render('widget', $templateData);
     }
 
     /**
