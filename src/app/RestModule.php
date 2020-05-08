@@ -39,9 +39,11 @@ class RestModule
      * @param Customer $customer
      * @return void
      */
-    public function addCustomer(Customer $customer): void
+    public function addCustomer(Customer $customer): self
     {
         $this->customer = $customer;
+
+        return $this;
     }
 
     /**
@@ -51,7 +53,7 @@ class RestModule
      * @return void
      * @throws ProductException
      */
-    public function addProducts(array $products): void
+    public function addProducts(array $products): self
     {
         if ($this->price !== null) {
             throw new ProductException('Either Price or Product must be added, not both');
@@ -62,6 +64,8 @@ class RestModule
         }
 
         $this->products = $products;
+
+        return $this;
     }
 
     /**
@@ -72,7 +76,7 @@ class RestModule
      * @throws ProductException
      * @throws ValidationException
      */
-    public function addPrice(float $price): void
+    public function addPrice(float $price): self
     {
         if (!empty($this->products)) {
             throw new ProductException('Either Price or Product must be added, not both');
@@ -83,6 +87,8 @@ class RestModule
         }
 
         $this->price = $price;
+
+        return $this;
     }
 
     /**
@@ -94,7 +100,7 @@ class RestModule
      * @return void
      * @throws ProductException
      */
-    public function createPayment(string $orderNumber, array $paymentData = [], string $type = self::TYPE_JSON): void
+    public function createPayment(string $orderNumber, array $paymentData = [], string $type = self::TYPE_JSON): self
     {
         if ($this->price === null && empty($this->products)) {
             throw new ProductException('Payment must have price or at least one product');
@@ -102,6 +108,8 @@ class RestModule
 
         $this->type = $type;
         $this->payment = new RestPayment($orderNumber, $paymentData, $this->customer, $this->products, $this->price);
+
+        return $this;
     }
 
     /**
