@@ -121,7 +121,7 @@ class RestPayment
     }
 
     /**
-     * Get server ulr for default return urls.
+     * Get server URL for default return URLs.
      *
      * @return string
      */
