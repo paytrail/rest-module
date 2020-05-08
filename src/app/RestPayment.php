@@ -105,7 +105,7 @@ class RestPayment
             'notificationUrl' => $this->paymentData['urlSet']['notification'] ?? $this->getServerUrl() . 'notify',
         ];
 
-        if ($this->price) {
+        if ($this->price !== null) {
             $data['price'] = $this->price;
         }
 
