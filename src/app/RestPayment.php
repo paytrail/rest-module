@@ -58,7 +58,7 @@ class RestPayment
             'products' => [],
         ];
 
-        if ($this->customer) {
+        if ($this->customer !== null) {
             $data['orderDetails']['contact'] = [
                 'telephone' => $this->customer->telephone,
                 'mobile' => $this->customer->mobile,
