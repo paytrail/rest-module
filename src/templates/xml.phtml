@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<payment>
+    <orderNumber><?php echo $orderNumber; ?></orderNumber>
+    <currency><?php echo $paymentData['currency']  ?? 'EUR'; ?></currency>
+    <locale><?php echo $paymentData['locale'] ?? 'fi_FI'; ?></locale>
+    <urlSet>
+        <success><?php echo $successUrl; ?></success>
+        <failure><?php echo $failureUrl; ?></failure>
+        <pending></pending>
+        <notification><?php echo $notificationUrl; ?></notification>
+    </urlSet>
+    <?php if (isset($price)): ?>
+        <price><?php echo $price; ?></price>
+    <?php else: ?>
+        <orderDetails>
+            <includeVat><?php echo $paymentData['orderDetails']['includeVat'] ?? '1'; ?></includeVat>
+            <?php if (isset($customer)): ?>
+                <contact>
+                    <telephone><?php echo $customer->telephone; ?></telephone>
+                    <mobile><?php echo $customer->mobile; ?></mobile>
+                    <email><?php echo $customer->email; ?></email>
+                    <firstName><?php echo $customer->firstName; ?></firstName>
+                    <lastName><?php echo $customer->lastName; ?></lastName>
+                    <companyName><?php echo $customer->companyName; ?></companyName>
+                    <address>
+                        <street><?php echo $customer->street; ?></street>
+                        <postalCode><?php echo $customer->postalCode; ?></postalCode>
+                        <postalOffice><?php echo $customer->postalOffice; ?></postalOffice>
+                        <country><?php echo $customer->country; ?></country>
+                    </address>
+                </contact>
+            <?php endif; ?>
+            <?php if (isset($products)): ?>
+                <products>
+                <?php foreach ($products as $product): ?>
+                    <product>
+                        <title><?php echo $product->title; ?></title>
+                        <code><?php echo $product->code; ?></code>
+                        <amount><?php echo $product->amount; ?></amount>
+                        <price><?php echo $product->price; ?></price>
+                        <vat><?php echo $product->vat; ?></vat>
+                        <discount><?php echo $product->discount; ?></discount>
+                        <type><?php echo $product->type; ?></type>
+                    </product>
+                <?php endforeach; ?>
+                </products>
+            <?php endif; ?>
+        </orderDetails>
+    <?php endif; ?>
+</payment>

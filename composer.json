@@ -10,5 +10,31 @@
         }
     ],
     "minimum-stability": "stable",
-    "require": {}
+    "require": {
+        "php": ">=7.2",
+        "guzzlehttp/guzzle": "^6.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Paytrail\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Paytrail\\Tests\\": "tests/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.0",
+        "phpunit/php-code-coverage": "^7.0",
+        "phpspec/prophecy": "^1.10"
+    },
+    "scripts": {
+        "test": [
+            "@composer dump-autoload -o",
+            "vendor/bin/phpunit"
+        ],
+        "test-coverage": "@test --coverage-text --coverage-html test-reports/html"
+    },
+    "prefer-stable": true
 }
