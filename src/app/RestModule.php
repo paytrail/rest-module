@@ -34,7 +34,6 @@ class RestModule
      * Add customer information to order.
      *
      * @param Customer $customer
-     *
      * @return void
      */
     public function addCustomer(Customer $customer): void
@@ -46,13 +45,13 @@ class RestModule
      * Add products to order.
      *
      * @param array $products
-     *
      * @return void
+     * @throws ProductException
      */
     public function addProducts(array $products): void
     {
-        if ($this->price) {
-            throw new ProductException('Either Price of Product must be added, not both');
+        if ($this->price !== null) {
+            throw new ProductException('Either Price or Product must be added, not both');
         }
 
         if (count($products) >= 500) {
@@ -66,16 +65,17 @@ class RestModule
      * Add order price.
      *
      * @param float $price
-     *
      * @return void
+     * @throws ProductException
+     * @throws ValidationException
      */
     public function addPrice(float $price): void
     {
         if (!empty($this->products)) {
-            throw new ProductException('Either Price of Product must be added, not both');
+            throw new ProductException('Either Price or Product must be added, not both');
         }
 
-        if ($this->customer) {
+        if ($this->customer !== null) {
             throw new ValidationException('Customer information needs product information');
         }
 
@@ -88,15 +88,13 @@ class RestModule
      * @param string $orderNumber
      * @param array  $paymentData
      * @param string $type
-     *
      * @return void
+     * @throws ProductException
      */
     public function createPayment(string $orderNumber, array $paymentData = [], string $type = self::TYPE_JSON): void
     {
-        if (!$this->price && empty($this->products)) {
+        if ($this->price === null && empty($this->products)) {
             throw new ProductException('Payment must have price or at least one product');
-
-            return;
         }
 
         $this->type = $type;
@@ -107,12 +105,12 @@ class RestModule
      * Get link to Paytrail payment page.
      *
      * @param RestClient $restClient
-     *
      * @return string
+     * @throws ValidationException
      */
     public function getPaymentLink(RestClient $restClient = null): string
     {
-        if (!$this->payment) {
+        if ($this->payment === null) {
             throw new ValidationException('No valid payment found');
         }
 
@@ -126,8 +124,8 @@ class RestModule
      * Get embed payment widget.
      *
      * @param RestClient $restClient
-     *
      * @return string
+     * @throws ValidationException
      */
     public function getPaymentWidget(RestClient $restClient = null): string
     {
@@ -151,7 +149,6 @@ class RestModule
      * Validate return authcode.
      *
      * @param array $returnParameters
-     *
      * @return boolean
      */
     public function returnAuthcodeIsValid(array $returnParameters): bool
@@ -163,7 +160,6 @@ class RestModule
      * Check if order is paid.
      *
      * @param array $returnParameters
-     *
      * @return boolean
      */
     public function isPaid(array $returnParameters): bool

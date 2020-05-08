@@ -35,7 +35,6 @@ class RestClient
      * Get response from Paytrail rest api.
      *
      * @param RestPayment $payment
-     *
      * @return object
      */
     public function getResponse(RestPayment $payment): object
@@ -50,7 +49,6 @@ class RestClient
      * Get rest request content.
      *
      * @param RestPayment $payment
-     *
      * @return string
      */
     private function getRequestContent(RestPayment $payment): string
@@ -66,8 +64,9 @@ class RestClient
      * Send request to Paytrail rest api.
      *
      * @param string $content
-     *
+
      * @return Response
+     * @throws ConnectionException
      */
     private function sendRequest(string $content): Response
     {
@@ -94,29 +93,42 @@ class RestClient
      * Get response content from response object.
      *
      * @param string $content
-     *
      * @return object
      */
     private function getResponseContent(Response $response): object
     {
-        $responseContent = $response->getBody()->getContents();
-
         if ($response->getStatusCode() !== self::SUCCESS_STATUS_CODE) {
-            if ($response->getHeader('Content-Type')[0] === RestModule::TYPE_XML) {
-                $xml = simplexml_load_string($responseContent);
-
-                throw new ConnectionException((string) $xml->errorMessage);
-            }
-
-            $response = json_decode($responseContent);
-
-            throw new ConnectionException($response->errorMessage);
+            $this->handleFailedResponse($response);
         }
+
+        $responseContent = $response->getBody()->getContents();
 
         if ($response->getHeader('Content-Type')[0] === RestModule::TYPE_JSON) {
             return json_decode($responseContent);
         }
 
         return simplexml_load_string($responseContent);
+    }
+
+    /**
+     * Parse error message from failed response and throw an exception.
+     *
+     * @param Response $response
+     * @return void
+     * @throws ConnectionException
+     */
+    private function handleFailedResponse(Response $response)
+    {
+        $responseContent = $response->getBody()->getContents();
+
+        if ($response->getHeader('Content-Type')[0] === RestModule::TYPE_XML) {
+            $xml = simplexml_load_string($responseContent);
+
+            throw new ConnectionException((string) $xml->errorMessage);
+        }
+
+        $response = json_decode($responseContent);
+
+        throw new ConnectionException($response->errorMessage);
     }
 }

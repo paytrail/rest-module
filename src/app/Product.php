@@ -29,10 +29,8 @@ class Product
      * Create new product.
      *
      * @param array $productData
-     *
-     * @throws ProductException
-     *
      * @return self
+     * @throws ProductException
      */
     public static function create(array $productData): self
     {

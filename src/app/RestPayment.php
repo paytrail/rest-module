@@ -138,7 +138,6 @@ class RestPayment
      * Get XML content from template.
      *
      * @param array $data
-     *
      * @return string
      */
     private function getXmlTemplate(array $data = []): string

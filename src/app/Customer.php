@@ -24,7 +24,6 @@ class Customer
      * Create customer for payment.
      *
      * @param array $customerData
-     *
      * @return self
      */
     public static function create(array $customerData): self
