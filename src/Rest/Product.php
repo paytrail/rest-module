@@ -11,11 +11,11 @@ use Paytrail\Exceptions\ProductException;
  */
 class Product
 {
-    const TYPE_NORMAL = 1;
-    const TYPE_POSTAL = 2;
-    const TYPE_HANDLING = 3;
+    public const TYPE_NORMAL = 1;
+    public const TYPE_POSTAL = 2;
+    public const TYPE_HANDLING = 3;
 
-    const DEFAULT_VAT_PERCENT = 24;
+    public const DEFAULT_VAT_PERCENT = 24;
 
     public $title;
     public $price;
