@@ -9,7 +9,7 @@ namespace Paytrail\Rest;
  */
 class RestPayment
 {
-    const TEMPLATE_PATH = '/../templates/';
+    public const TEMPLATE_PATH = '/../templates/';
 
     protected $orderNumber;
     protected $paymentData;
