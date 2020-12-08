@@ -14,7 +14,7 @@ use Paytrail\Exception\TemplateException;
  */
 class Template
 {
-    const TEMPLATE_PATH = '/../templates/';
+    public const TEMPLATE_PATH = '/../templates/';
 
     /**
      * Extract data variables from array and render template from template folder, use basename to chroot in template directory.

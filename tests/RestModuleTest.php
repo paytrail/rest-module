@@ -17,10 +17,10 @@ use Prophecy\Prophet;
 
 class RestModuleTest extends TestCase
 {
-    const TOKEN = 'secretToken';
-    const PAYMENT_LINK = 'linkToPayment';
+    public const TOKEN = 'secretToken';
+    public const PAYMENT_LINK = 'linkToPayment';
 
-    const ORDER_NUMBER = 'Test-Payment-1234';
+    public const ORDER_NUMBER = 'Test-Payment-1234';
 
     private $product;
     private $customer;
