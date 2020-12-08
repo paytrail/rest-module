@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Paytrail\Rest;
 
-use Paytrail\Exceptions\ProductException;
-use Paytrail\Exceptions\ValidationException;
+use Paytrail\Exception\ProductException;
+use Paytrail\Exception\ValidationException;
 
 /**
  * @author Paytrail <tech@paytrail.com>

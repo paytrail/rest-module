@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Paytrail\Rest;
 
-use Paytrail\Exceptions\TemplateException;
+use Paytrail\Exception\TemplateException;
 
 /**
  * Templating class for including form templates.

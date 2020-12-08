@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Tests;
+namespace Paytrail\Tests;
 
-use Paytrail\Exceptions\TemplateException;
+use Paytrail\Exception\TemplateException;
 use Paytrail\Rest\Template;
 use PHPUnit\Framework\TestCase;
 

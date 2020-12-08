@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests;
+namespace Paytrail\Tests;
 
 use Paytrail\Rest\Customer;
 use Paytrail\Rest\Product;

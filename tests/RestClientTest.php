@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests;
+namespace Paytrail\Tests;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;

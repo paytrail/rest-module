@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Tests;
+namespace Paytrail\Tests;
 
-use Paytrail\Exceptions\ProductException;
-use Paytrail\Exceptions\ValidationException;
+use Paytrail\Exception\ProductException;
+use Paytrail\Exception\ValidationException;
 use Paytrail\Rest\Customer;
 use Paytrail\Rest\Merchant;
 use Paytrail\Rest\Product;
