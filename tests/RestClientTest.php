@@ -82,14 +82,4 @@ class RestClientTest extends TestCase
         $this->expectException(ConnectionException::class);
         $this->getResponse($mock, RestModule::TYPE_XML);
     }
-
-    public function testNoConnectionThrowsException()
-    {
-        $mock = new MockHandler([
-            new ConnectException('Error', new Request('POST', 'Error')),
-        ]);
-
-        $this->expectException(ConnectionException::class);
-        $this->getResponse($mock);
-    }
 }
