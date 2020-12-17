@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Paytrail\Rest;
 
-use Paytrail\Exceptions\TemplateException;
+use Paytrail\Exception\TemplateException;
 
 /**
  * Templating class for including form templates.
@@ -14,7 +14,7 @@ use Paytrail\Exceptions\TemplateException;
  */
 class Template
 {
-    const TEMPLATE_PATH = '/../templates/';
+    public const TEMPLATE_PATH = '/../templates/';
 
     /**
      * Extract data variables from array and render template from template folder, use basename to chroot in template directory.

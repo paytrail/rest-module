@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Paytrail\Exceptions;
+namespace Paytrail\Exception;
 
 /**
  * @package e2-module

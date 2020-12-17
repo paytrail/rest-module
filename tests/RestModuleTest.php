@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Tests;
+namespace Paytrail\Tests;
 
-use Paytrail\Exceptions\ProductException;
-use Paytrail\Exceptions\ValidationException;
+use Paytrail\Exception\ProductException;
+use Paytrail\Exception\ValidationException;
 use Paytrail\Rest\Customer;
 use Paytrail\Rest\Merchant;
 use Paytrail\Rest\Product;
@@ -17,10 +17,10 @@ use Prophecy\Prophet;
 
 class RestModuleTest extends TestCase
 {
-    const TOKEN = 'secretToken';
-    const PAYMENT_LINK = 'linkToPayment';
+    public const TOKEN = 'secretToken';
+    public const PAYMENT_LINK = 'linkToPayment';
 
-    const ORDER_NUMBER = 'Test-Payment-1234';
+    public const ORDER_NUMBER = 'Test-Payment-1234';
 
     private $product;
     private $customer;

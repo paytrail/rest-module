@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Paytrail\Rest;
 
-use Paytrail\Exceptions\ProductException;
-use Paytrail\Exceptions\ValidationException;
+use Paytrail\Exception\ProductException;
+use Paytrail\Exception\ValidationException;
 
 /**
  * @author Paytrail <tech@paytrail.com>
  */
 class RestModule
 {
-    const TYPE_XML = 'application/xml';
-    const TYPE_JSON = 'application/json';
+    public const TYPE_XML = 'application/xml';
+    public const TYPE_JSON = 'application/json';
 
-    const WIDGET_URL = 'https://payment.paytrail.com/js/payment-widget-v1.0.min.js';
+    public const WIDGET_URL = 'https://payment.paytrail.com/js/payment-widget-v1.0.min.js';
 
     private $merchant;
     private $customer;
