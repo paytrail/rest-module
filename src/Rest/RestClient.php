@@ -14,10 +14,10 @@ use Paytrail\Exception\ConnectionException;
  */
 class RestClient
 {
-    const SERVICE_URL = 'https://payment.paytrail.com/api-payment/create';
-    const API_VERSION = 1;
+    public const SERVICE_URL = 'https://payment.paytrail.com/api-payment/create';
+    public const API_VERSION = 1;
 
-    const SUCCESS_STATUS_CODE = 201;
+    public const SUCCESS_STATUS_CODE = 201;
 
     private $merchant;
     private $type;
